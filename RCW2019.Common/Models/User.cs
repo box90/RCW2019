@@ -10,9 +10,8 @@ namespace RCW2019.Common
     {
         public string UserName { get; set; }
 
-        public User(string userName)
+        public User()
         {
-            this.UserName = userName;
         }
     }
 }

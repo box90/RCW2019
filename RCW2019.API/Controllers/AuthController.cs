@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 using RCW2019.API.Hubs;
 using RCW2019.Common;
 using RWC2019.BL;
@@ -17,17 +18,19 @@ namespace RCW2019.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IHubContext<RCWHub> _hubContext;
-        public AuthController(IHubContext<RCWHub> hubContext)
+        private readonly IConfiguration configuration;
+        private readonly IHubContext<RCWHub> hubContext;
+        public AuthController(IHubContext<RCWHub> _hubContext, IConfiguration _configuration)
         {
-            _hubContext = hubContext;
+            configuration = _configuration;
+            hubContext = _hubContext;
         }
 
-        [HttpPost("Login")]
+        [HttpPost("login")]
         [AllowAnonymous]
-        public AuthUserModel Login([FromBody]string userName)
+        public AuthUserModel Login([FromBody]User u)
         {
-            return new AuthUserModel(userName, AuthManager.GetToken(new User(userName)));  
+            return new AuthUserModel(u.UserName, AuthManager.GetToken(u));  
         }
     }
 }

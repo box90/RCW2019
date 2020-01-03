@@ -10,7 +10,7 @@ namespace RCW2019.Common
     {
         public static string GetKey()
         {
-            return "qwertyuiop";
+            return "asdfghjklasdfghjklasdfghjkl";
         }
 
         public static string GetIssuer()

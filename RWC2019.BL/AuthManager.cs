@@ -23,6 +23,8 @@ namespace RWC2019.BL
                 NotBefore = DateTime.UtcNow,
                 Subject = new ClaimsIdentity(new List<Claim>
                 {
+                    new Claim(JwtRegisteredClaimNames.Sub, u.UserName),
+                    new Claim(JwtRegisteredClaimNames.Email, $"{u.UserName}@mail.com"),
                     new Claim(ClaimTypes.Name, u.UserName),
                     new Claim(JwtRegisteredClaimNames.Birthdate, "2019-01-01"),
                     new Claim(JwtRegisteredClaimNames.Jti, "000000")

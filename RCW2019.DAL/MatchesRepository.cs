@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using RCW2019.DAL.Mappers;
+using Newtonsoft.Json.Converters;
 
 namespace RCW2019.DAL
 {
@@ -54,13 +55,13 @@ namespace RCW2019.DAL
                 {
                     return dto?.Select(dtoMatch =>
                     {
-                        var events = dtoMatch?.Events?.Where(ev => { return Mapper.IsPassedEvent(ev.Min, dtoMatch.StartDate, now); }).Select(ev => ev.ToEvent());
+                        var events = dtoMatch?.Events?.Where(ev => { return Mapper.IsPassedEvent(ev.Min, dtoMatch.StartTime, now); }).Select(ev => ev.ToEvent());
 
                         return new Match()
                         {
                             Id = dtoMatch.Id,
-                            ActualMin = Mapper.ActualMin(dtoMatch.StartDate, now),
-                            StartTime = dtoMatch.StartDate,
+                            ActualMin = Mapper.ActualMin(dtoMatch.StartTime, now),
+                            StartTime = dtoMatch.StartTime,
                             Team1 = dtoMatch.Team1,
                             Team2 = dtoMatch.Team2,
                             Team1Points = events.Where(ev => ev.Team == 1).Sum(ev => ev.Points),
@@ -88,12 +89,12 @@ namespace RCW2019.DAL
                     var det = new MatchDetail()
                     {
                         Id = dto.Id,
-                        StartTime = dto.StartDate,
+                        StartTime = dto.StartTime,
                         Team1 = dto.Team1,
                         Team2 = dto.Team2,
-                        ActualMin = Mapper.ActualMin(dto.StartDate, now),
+                        ActualMin = Mapper.ActualMin(dto.StartTime, now),
                         Events = dto.Events?.
-                                    Where(ev => { return allEvents || Mapper.IsPassedEvent(ev.Min, dto.StartDate, now); }).
+                                    Where(ev => { return allEvents || Mapper.IsPassedEvent(ev.Min, dto.StartTime, now); }).
                                     Select(ev => ev.ToEvent()),
                     };
                     det.Team1Points = det.Events.Where(ev => ev.Team == 1).Sum(ev => ev.Points);
